@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+
+GAT-Project/Assets/Packages** filter=lfs diff=lfs merge=lfs -text
+GAT-Project/Library** filter=lfs diff=lfs merge=lfs -text
