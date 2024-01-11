@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using UnityEditor.PackageManager;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.Image;
 #endif
 
 namespace StarterAssets
@@ -11,6 +13,24 @@ namespace StarterAssets
 #endif
 	public class FirstPersonController : MonoBehaviour
 	{
+        [Header("Footsteps")]
+        [Tooltip("Time between each interval")]
+        public float footstepInterval = 0.45f;
+        [Tooltip("Difference between pitch of each footstep")]
+        public float PitchDifference = 0.2f;
+        [Tooltip("Currently Playing footstep sound")]
+        public bool PlaySurfaceSound = false;
+        [Tooltip("Footstep sound source")]
+		public AudioSource AudioSource = null;
+        [Tooltip("Active Sound Surface")]
+        public SoundSurface PlayerSoundSurface = null;
+
+        [Header("Footstep SFX")]
+        public AudioClip SFX_HeavyMetal = null;
+        public AudioClip SFX_LightMetal = null;
+        public AudioClip SFX_Sand = null;
+        public AudioClip SFX_Mud = null;
+
         [Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
 		public float MoveSpeed = 4.0f;
@@ -71,6 +91,7 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+		private Collider _collider;
 
 		private const float _threshold = 0.01f;
 
@@ -99,6 +120,7 @@ namespace StarterAssets
 		{
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
+			_collider = GetComponent<Collider>();
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
 #else
@@ -108,16 +130,54 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
-		}
 
-		private void Update()
+			AudioSource.clip = SFX_HeavyMetal;
+        }
+
+		float footStepTimer;
+		bool pitchToggle = false;
+
+        private void Update()
 		{
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
-		}
 
-		private void LateUpdate()
+            // Get Suface below player
+            if (Physics.Raycast(AudioSource.transform.position, Vector3.down, out RaycastHit hitinfo, 1.0f))
+			{
+				SoundSurface Surface = hitinfo.collider.gameObject.GetComponent<SoundSurface>();
+				Debug.Log("Surface: " + hitinfo.collider.gameObject.name);
+				if(Surface != PlayerSoundSurface) PlayerSoundSurface = Surface;
+			}
+
+			// if player is moving play footsteps
+			if (PlaySurfaceSound)
+			{
+                footStepTimer -= Time.deltaTime;
+				if (footStepTimer <= 0.0f)
+				{
+					AudioSource.PlayClipAtPoint(PlayerSoundSurface.SurfaceFootstepClip, AudioSource.transform.position);
+					// Reset for next step.
+					footStepTimer = footstepInterval;
+
+					pitchToggle = !pitchToggle;
+                    AudioSource.pitch = 1 + (pitchToggle ? PitchDifference : -PitchDifference);
+                }
+            }
+			else if (footStepTimer != footstepInterval)
+			{
+                footStepTimer = footstepInterval;
+			}
+        }
+
+		private void OnCollisionEnter(Collision collision)
+        {
+			SoundSurface SoundSurface = collision.gameObject.GetComponent<SoundSurface>();
+            if (SoundSurface && SoundSurface != PlayerSoundSurface) PlayerSoundSurface = SoundSurface;
+        }
+
+        private void LateUpdate()
 		{
 			CameraRotation();
 		}
@@ -160,7 +220,15 @@ namespace StarterAssets
 
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is no input, set the target speed to 0
-			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+			if (_input.move == Vector2.zero)
+			{
+                targetSpeed = 0.0f;
+                if (PlaySurfaceSound) PlaySurfaceSound = false;
+            }
+            else
+			{
+				if(!PlaySurfaceSound && Grounded) PlaySurfaceSound = true;
+			}
 
 			// a reference to the players current horizontal velocity
 			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -265,4 +333,5 @@ namespace StarterAssets
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
 	}
+	
 }
