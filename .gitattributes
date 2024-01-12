@@ -3,3 +3,16 @@
 
 
 GAT-Project/Assets/Packages** filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*M4A filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*FLAC filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*MP3 filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*MP4 filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*WAV filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*WMA filter=lfs diff=lfs merge=lfs -text
+# GAT-Audio/*AAC filter=lfs diff=lfs merge=lfs -text
+
+GAT-Audio/** filter=lfs diff=lfs merge=lfs -text
+
+
+
+
