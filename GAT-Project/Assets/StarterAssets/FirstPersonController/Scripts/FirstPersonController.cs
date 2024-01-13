@@ -111,8 +111,7 @@ namespace StarterAssets
 			if (_mainCamera == null)
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             
-			if (AudioSource == null)
-                AudioSource = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
+			
         }
 
 		private void Start()
@@ -130,7 +129,8 @@ namespace StarterAssets
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
 
-		
+            if (AudioSource == null)
+                AudioSource = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
         }
 
 		float footStepTimer;
@@ -155,7 +155,9 @@ namespace StarterAssets
                 footStepTimer -= Time.deltaTime;
 				if (footStepTimer <= 0.0f)
 				{
-					AudioSource.PlayClipAtPoint(PlayerSoundSurface.SurfaceFootstepClip, AudioSource.transform.position);
+					if(PlayerSoundSurface.SurfaceFootstepClip)
+						AudioSource.PlayClipAtPoint(PlayerSoundSurface.SurfaceFootstepClip, AudioSource.transform.position);
+
 					// Reset for next step.
 					footStepTimer = footstepInterval;
 

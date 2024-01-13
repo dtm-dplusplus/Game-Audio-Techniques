@@ -4,32 +4,34 @@ public class SoundVoulme : MonoBehaviour
 {
     [Header("Sound Volume")]
     [Tooltip("Volume Audio Source")]
-    public AudioSource VolumeAudioSource = null;
-
+    public AudioSource AudioSource = null;
     [Tooltip("Should Loop audio clip")]
     public bool LoopAudioClip = true;
+    [Tooltip("VolumeLevel for sound volume")]
+    public float AudioSourceVolume = 1f;
 
     private void Start()
     {
-        if (VolumeAudioSource == null)
-            VolumeAudioSource = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
+        if (AudioSource == null)
+            AudioSource = GetComponent<AudioSource>();
 
-        if (VolumeAudioSource)
-            VolumeAudioSource.loop = LoopAudioClip;
+        if (AudioSource)
+            AudioSource.loop = LoopAudioClip;
+
+        if (AudioSource) AudioSource.volume = 0f;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            if (VolumeAudioSource) VolumeAudioSource.Play();
-        }
+        if (other.gameObject.CompareTag("Player"))
+            if (AudioSource) AudioSource.volume = AudioSourceVolume;
     }
+    
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
-            if (VolumeAudioSource) VolumeAudioSource.Stop();
+        if (other.gameObject.CompareTag("Player"))
+            if (AudioSource) AudioSource.volume = 0f;
     }
 }
 

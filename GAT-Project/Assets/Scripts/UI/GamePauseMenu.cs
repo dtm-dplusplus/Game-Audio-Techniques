@@ -22,26 +22,25 @@ public class GamePauseMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) OnPauseGame();
+        if (Input.GetKeyDown(KeyCode.Escape) && !SettingsMenu.activeSelf) OnPauseGame();
     }
 
     public void OnPauseGame()
     {
+        // Pause Game Actions
+        Time.timeScale = Time.timeScale == 1 ? 0 : 1;
+
+        // Toggle UI
         PauseMenu.SetActive(!PauseMenu.activeSelf);
 
-        Debug.Log(Time.timeScale);
-        if (Time.timeScale == 1) Time.timeScale = 0;
-        else Time.timeScale = 1;
+        // Toggle mouse capture/visibility
+        if (Cursor.visible) Cursor.lockState = CursorLockMode.None;
+        else Cursor.lockState = CursorLockMode.Locked;
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.visible = !Cursor.visible;
 
+        // Toggle game sound
         AudioListener.pause = !AudioListener.pause;
-    }
-
-    public void OnClickInGameSettings()
-    {
-        SettingsMenu.SetActive(true);
     }
 
     public void OnClickQuitToMenu()
@@ -49,7 +48,7 @@ public class GamePauseMenu : MonoBehaviour
         SceneManager.LoadScene("GAT_StartMenu");
     }
 
-    public void onClickQuitToDesktop()
+    public void OnClickQuitToDesktop()
     {
         Application.Quit();
     }
