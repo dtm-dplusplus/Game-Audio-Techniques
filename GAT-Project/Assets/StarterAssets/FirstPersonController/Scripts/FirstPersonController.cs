@@ -111,10 +111,11 @@ namespace StarterAssets
 		{
 			// get a reference to our main camera
 			if (_mainCamera == null)
-			{
-				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-			}
-		}
+                _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            
+			if (AudioSource == null)
+                AudioSource = GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioSource>();
+        }
 
 		private void Start()
 		{
@@ -131,7 +132,7 @@ namespace StarterAssets
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
 
-			AudioSource.clip = SFX_HeavyMetal;
+		
         }
 
 		float footStepTimer;
