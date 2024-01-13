@@ -6,6 +6,10 @@ TagManager:
   tags:
   - CinemachineTarget
   - AudioSource
+  - StartMenu
+  - PauseMenu
+  - SettingsMenu
+  - MasterVolumeSlider
   layers:
   - Default
   - TransparentFX

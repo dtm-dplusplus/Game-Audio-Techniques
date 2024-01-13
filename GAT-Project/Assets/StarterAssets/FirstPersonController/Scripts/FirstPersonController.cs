@@ -1,8 +1,6 @@
-﻿using UnityEditor.PackageManager;
-using UnityEngine;
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-using static UnityEngine.UI.Image;
 #endif
 
 namespace StarterAssets
@@ -148,7 +146,6 @@ namespace StarterAssets
             if (Physics.Raycast(AudioSource.transform.position, Vector3.down, out RaycastHit hitinfo, 1.0f))
 			{
 				SoundSurface Surface = hitinfo.collider.gameObject.GetComponent<SoundSurface>();
-				Debug.Log("Surface: " + hitinfo.collider.gameObject.name);
 				if(Surface != PlayerSoundSurface) PlayerSoundSurface = Surface;
 			}
 
