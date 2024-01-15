@@ -13,6 +13,8 @@ TagManager:
   - UIAudioSource
   - AmbientSoundSource
   - AmbientVolumeSlider
+  - Button
+  - UIManager
   layers:
   - Default
   - TransparentFX

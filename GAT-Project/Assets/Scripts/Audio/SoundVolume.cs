@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SoundVoulme : MonoBehaviour
+public class SoundBoxVoulme : MonoBehaviour
 {
     [Header("Sound Volume")]
     [Tooltip("Volume Audio Source")]

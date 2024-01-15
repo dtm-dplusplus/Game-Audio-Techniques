@@ -25,12 +25,14 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical");
 
         //rotates character with the camera
         camEulerAngles = cam.transform.localEulerAngles;
-        camEulerAngles = new Vector3 (0, camEulerAngles.y, 0);
+        camEulerAngles = new Vector3(0, camEulerAngles.y, 0);
         transform.localEulerAngles = camEulerAngles;
 
         //x and z movement
@@ -38,10 +40,10 @@ public class PlayerMovement : MonoBehaviour
         movement += transform.right * moveX;
 
         //applies a jump to the y velocity
-        if(cc.isGrounded)
+        if (cc.isGrounded)
         {
             ySpeed = 0;
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 ySpeed = jumpHeight;
             }
@@ -52,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
         movement.y = ySpeed;
 
         cc.Move(movement * speed * Time.deltaTime);
-
     }
 
 
@@ -76,6 +77,4 @@ public class PlayerMovement : MonoBehaviour
         body.velocity = pushDir * pushPower;
 
     }
-
-
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -89,7 +90,7 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
-		private Collider _collider;
+        private Collider _collider;
 
 		private const float _threshold = 0.01f;
 
@@ -110,8 +111,6 @@ namespace StarterAssets
 			// get a reference to our main camera
 			if (_mainCamera == null)
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            
-			
         }
 
 		private void Start()
@@ -138,6 +137,8 @@ namespace StarterAssets
 
         private void Update()
 		{
+			if (Time.timeScale == 0) return;
+
 			JumpAndGravity();
 			GroundedCheck();
 			Move();

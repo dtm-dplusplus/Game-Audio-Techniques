@@ -18,8 +18,10 @@ public class CameraController : MonoBehaviour
    
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         //when right button is pressed, input axis name is changed.
-        if(Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1))
         {
             freeLook.m_XAxis.m_InputAxisName = XAxisInputName;
             freeLook.m_YAxis.m_InputAxisName = YAxisInputName;
