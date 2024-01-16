@@ -270,10 +270,12 @@ namespace StarterAssets
 		}
 		private void SurfaceCheck()
 		{
-            if (Physics.Raycast(AudioSource.transform.position, Vector3.down, out RaycastHit hitinfo, 1.0f))
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitinfo, 1.0f))
             {
-                SoundSurface Surface = hitinfo.collider.gameObject.GetComponent<SoundSurface>();
-                if (Surface != PlayerSoundSurface) PlayerSoundSurface = Surface;
+                if (hitinfo.collider.gameObject.TryGetComponent<SoundSurface>(out var Surface))
+                    PlayerSoundSurface = Surface;
+
+                else PlayerSoundSurface = null;
             }
         }
         
