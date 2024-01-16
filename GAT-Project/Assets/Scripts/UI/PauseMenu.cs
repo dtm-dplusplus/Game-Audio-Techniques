@@ -33,7 +33,7 @@ public class PauseMenu : MonoBehaviour
     {
         // Pause Game Actions
         Time.timeScale = 0;
-        CineBrain.enabled = false;
+        if(CineBrain) CineBrain.enabled = false;
 
         // Toggle mouse capture + visibility
         Cursor.lockState = CursorLockMode.Confined;
