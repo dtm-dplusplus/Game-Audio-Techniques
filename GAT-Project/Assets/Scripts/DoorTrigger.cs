@@ -8,29 +8,38 @@ public class DoorTrigger : MonoBehaviour
     public BoxCollider TriggerVolume = null;
     public bool IsOpen = false;
 
+    public AudioSource DoorAudioSource = null;
+    public AudioClip OpenClip = null;
+    public AudioClip CloseClip = null;
+
     // Start is called before the first frame update
     void Start()
     {
         Door = GetComponent<Animator>();
         TriggerVolume = GetComponent<BoxCollider>();
+        DoorAudioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.CompareTag("Player")) Door.SetTrigger("door_3_open");
-        Debug.Log("Enter");
+        if (DoorAudioSource && OpenClip) DoorAudioSource.PlayOneShot(OpenClip) ;
     }
 
     private void OnTriggerStay(Collider other)
     {
         // if (other.CompareTag("Player")) Door.Play("door_3_opened");
-        if (other.CompareTag("Player")) Door.SetTrigger("character_nearby");
-        Debug.Log("Stay");
+        if (other.CompareTag("Player"))
+        {
+            Door.SetTrigger("character_nearby");
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) Door.ResetTrigger("character_nearby");
-        Debug.Log("Exit");
+        if (other.CompareTag("Player"))
+        {
+            Door.ResetTrigger("character_nearby");
+            if (DoorAudioSource && CloseClip) DoorAudioSource.PlayOneShot(CloseClip);
+        }
     }
 }

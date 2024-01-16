@@ -18,20 +18,23 @@ public class SoundBoxVoulme : MonoBehaviour
         if (AudioSource)
             AudioSource.loop = LoopAudioClip;
 
-        if (AudioSource) AudioSource.volume = 0f;
+        if (AudioSource && LoopAudioClip) 
+            AudioSource.volume = 0f;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-            if (AudioSource) AudioSource.volume = AudioSourceVolume;
+        if (other.gameObject.CompareTag("Player") && AudioSource)
+        {
+            Debug.Log("Enter");
+            if (LoopAudioClip) AudioSource.volume = AudioSourceVolume;
+            else AudioSource.Play();
+        }
     }
-    
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-            if (AudioSource) AudioSource.volume = 0f;
+        if (other.gameObject.CompareTag("Player") && AudioSource)
+            AudioSource.volume = 0f;
     }
 }
-
