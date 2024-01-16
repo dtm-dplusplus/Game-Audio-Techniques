@@ -283,7 +283,7 @@ namespace StarterAssets
             if (_footStepTimer <= 0.0f)
             {
                 if (PlayerSoundSurface)
-                    AudioSource.PlayClipAtPoint(PlayerSoundSurface.SurfaceFootstepClip, AudioSource.transform.position);
+                    AudioSource.PlayOneShot(PlayerSoundSurface.SurfaceFootstepClip);
 
                 // Change Pitch for next step
                 _pitchToggle = !_pitchToggle;
