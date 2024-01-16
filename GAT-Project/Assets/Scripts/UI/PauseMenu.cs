@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class PauseMenu : MonoBehaviour
             if (SettingsMenu.activeSelf) SettingsMenu.SetActive(false);
             else gameObject.SetActive(false);
         }
+
+        if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene("GAT_Scene");
     }
 
     private void OnEnable()
